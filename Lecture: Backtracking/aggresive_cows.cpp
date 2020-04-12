@@ -1,13 +1,14 @@
 #include<bits/stdc++.h>
 using namespace std;
 
-int max_mindist(int arr[], int n, int c, int min, int max) 
+long long max_mindist(long long arr[], long long n, long long c, long long min, long long max) 
 {
   if (n < c) return -1;
-  int mid, count, current;
+  long long mid, count;
+  int current;
   bool flag;
-  int ans = 0;
-  int print = 0;
+  long long ans = 0;
+ 
   while (max >= min)
   {
       mid = min + (max-min)/2;
@@ -43,18 +44,23 @@ int max_mindist(int arr[], int n, int c, int min, int max)
   return ans;
 }
 
-int main() 
-{
-  int t;
-    cin >> t;
-    for(int i=0; i<t; i++)
+
+int main() {
+
+    long long t;
+    cin>>t;
+    
+    for(long long t0=0;t0<t;t0++)
     {
-        int n, c;
-        cin >> n >> c;
-        int arr[n];
-        for(int j=0; j<n; j++)
-            cin >> arr[j];
-        sort(arr,arr+n);
-        cout<<endl<<max_mindist(arr, n, c, 0, arr[n-1]-arr[0])<<endl;
+        long long n,c,i;
+        cin>>n>>c;
+        
+        long long xi[n];
+
+        for(i=0;i<n;i++)
+            cin>>xi[i];
+
+        sort(xi,xi+n);
+        cout<<max_mindist(xi, n, c, 0, xi[n-1]-xi[0])<<endl;
     }
 }
