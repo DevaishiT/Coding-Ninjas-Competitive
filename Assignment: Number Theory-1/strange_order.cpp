@@ -1,48 +1,74 @@
 #include<bits/stdc++.h>
-using namespace std;
 
-int gcd(int x, int y)
+using namespace std;
+#define MAX 2000001
+
+int gcd(int a,int b)
 {
-    if (x < y) swap(x,y);
-    if (y == 0) return x;
-    return gcd(y, x%y);
+    if(a < b) swap(a,b);
+    if(b == 0) return a;
+    else return gcd(b,a%b);
 }
 
-int main() 
+vector<bool> create_sieve( int n)
+{
+    vector<bool> sieve(n+1, false);
+
+    for(int i = 2; i <= n; i++)   
+        sieve[i] = true;
+    
+    for(int i = 2; i <= sqrt(n);i++)
+    {
+        if(sieve[i])
+        {
+            for(int j = 2*i; j <= n ;j += i)
+                sieve[j] = false;
+        }
+    }
+    return sieve;
+}
+
+int main()
 {
     int n;
     cin >> n;
+
+    vector<bool> sieve = create_sieve(n);
     
-    set<int> p;
-    vector<int> a;
-    for(int i=0; i<n; i++) p.insert(i);
-    
-    set<int>::iterator it = p.end();
-    int size = p.size();
-    while(size)
+    vector<int> out;
+    set<int> removed;
+
+    int temp = n;
+    while( temp != 0)
     {
-        int temp = *it;
-        it--;
-        p.erase(temp);
-        size--;
-        a.push_back(temp);
-        cout<<p.size()<<endl;
-        int v;
-        for(; it != p.begin(); it--)
+        if(removed.find(temp) == removed.end())
         {
-			if (gcd(*it,temp) != 1)
+            if(sieve[temp])
             {
-                v = *it;
-                it--;
-                p.erase(v);
-                size--;
-                a.push_back(v);
+                out.push_back(temp);
+                removed.insert(temp);
+            }
+            else
+            {
+                out.push_back(temp);
+                for(int i = temp-1; i >1 ; i--)
+                {
+                    if(gcd(temp,i)!=1)
+                    {
+                        if(removed.find(i) == removed.end() )
+                        {
+                            out.push_back(i);
+                            removed.insert(i);
+                        }
+                        
+                    }
+                }
             }
         }
-        it = p.end();
+        temp--;
     }
-    for(int i=0; i<a.size(); i++) cout<<a[i]<<" ";
+    for(int i = 0; i< n; i++)
+        cout<<out[i]<<" ";
     cout<<endl;
     return 0;
-    
 }
