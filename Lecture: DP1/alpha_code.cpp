@@ -1,20 +1,29 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-int alpha_code(string input) 
-{
-    int val = 0;
-    int m = 1000000007;
+#define mod 1000000007
+
+int alpha_code(int * input, int size) {
+    vector<int> output(size + 1,0);
+    output[0] = 1;
+    output[1] = 1;
+
+    for (int i = 2; i <= size; i++) {
+        if (input[i-1] != 0)
+        {
+            output[i] = output[i - 1] % mod;
+        }
     
-    if (input.length() == 0) return 1;
-    if (input[0] == '0') return 0;
-    
-    val = (val + alpha_code(input.substr(1))%m)%m;
-    
-    if (input.length() >= 2 && stoi(input.substr(0,2)) <= 26)
-        val = (val + alpha_code(input.substr(2))%m)%m;
-    
-    return val;
+        if (input[i-2] *10 + input[i - 1] <= 26)
+        {
+            if (input[i-2] != 0)
+            {
+                output[i] = (output[i - 2] + output[i])%mod;
+            }
+        }
+    }
+    int ans = output[size];
+    return ans;
 }
 
 int main()
@@ -24,7 +33,11 @@ int main()
     {
         cin >> input;
         if(input[0] == '0') return 0;
-        cout << alpha_code(input) << endl;
+        int len = input.length();
+        int arr[len];
+        for(int i=0; i<len; i++)
+            arr[i] = input[i] - 48;
+        cout << alpha_code(arr,len) << endl;
     }
     return 0 ; 
 }
